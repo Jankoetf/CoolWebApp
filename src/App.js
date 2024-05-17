@@ -148,7 +148,7 @@ export default function App() {
     <div className="App">
       <Sidebar />
       <Header />
-      <Character x={x} y={y} action={active_action} passive={passive_action} />
+      {/* <Character x={x} y={y} action={active_action} passive={passive_action} /> */}
     </div>
   );
 }
