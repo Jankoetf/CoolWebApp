@@ -11,11 +11,12 @@ function getRandomInt(min, max) {
 
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
+
 export default function FlameHashira() {
   const [index, setIndex] = useState(0);
   const variablesRef = useRef({
-    x: 300,
-    y: 300,
+    x: window.innerWidth * 0.5,
+    y: window.innerHeight * 0.1,
     dim: 80,
     action: "Idle",
     passive: "Right",
@@ -27,6 +28,11 @@ export default function FlameHashira() {
   });
   const idleTimeout = useRef(null);
   const mirror = variablesRef.current.passive === "Left" ? true : false;
+  const widthBoundary = [window.innerWidth * 0.2, window.innerWidth * 1.0];
+  const heightBoundary = [
+    window.innerHeight * -0.05,
+    window.innerHeight * 1.05,
+  ];
 
   const resetIdleTimeout = () => {
     if (idleTimeout.current) {
@@ -40,7 +46,10 @@ export default function FlameHashira() {
   useEffect(() => {
     const tick = () => {
       setIndex((i) => (i + 0.5 >= 1000 ? 0 : i + 0.5));
-      if (variablesRef.current.action === "Run") {
+      if (
+        variablesRef.current.action === "Run" ||
+        variablesRef.current.action === "Jump"
+      ) {
         if (variablesRef.current.passive === "Left")
           variablesRef.current.x -= 2;
         else if (variablesRef.current.passive === "Right")
@@ -63,6 +72,18 @@ export default function FlameHashira() {
             variablesRef.current.type === "ninja" ? "kunoichi" : "ninja";
         }
         variablesRef.current.spawn_time -= 1;
+      }
+
+      if (variablesRef.current.x < widthBoundary[0]) {
+        variablesRef.current.x = widthBoundary[1];
+      } else if (variablesRef.current.x > widthBoundary[1]) {
+        variablesRef.current.x = widthBoundary[0];
+      }
+
+      if (variablesRef.current.y < heightBoundary[0]) {
+        variablesRef.current.y = heightBoundary[1];
+      } else if (variablesRef.current.y > heightBoundary[1]) {
+        variablesRef.current.y = heightBoundary[0];
       }
     };
 
@@ -106,11 +127,18 @@ export default function FlameHashira() {
         }
         break;
       case " ":
-        variablesRef.current.jump_time = 20;
-        variablesRef.current.action = "Jump";
+        if (variablesRef.current.jump_time === 0) {
+          variablesRef.current.jump_time = 20;
+          variablesRef.current.action = "Jump";
+        }
+
         break;
       case "s":
-        variablesRef.current.spawn_time = 15;
+        if (
+          variablesRef.current.action === "Idle" ||
+          variablesRef.current.action === "Run"
+        )
+          variablesRef.current.spawn_time = 15;
         break;
       case "d":
         variablesRef.current.element =
@@ -172,6 +200,8 @@ export default function FlameHashira() {
   console.log(spawn_src);
 
   const opacity = index > 500 ? (1000 - index) / 1000 : index / 1000;
+  let out_opacity =
+    variablesRef.current.element === "fire" ? opacity + 0.2 : opacity;
 
   return (
     <div className="character" style={style}>
@@ -191,7 +221,7 @@ export default function FlameHashira() {
             width: "200%",
             height: "200%",
             objectFit: "contain",
-            opacity: opacity,
+            opacity: out_opacity,
             pointerEvents: "none",
           }}
         />

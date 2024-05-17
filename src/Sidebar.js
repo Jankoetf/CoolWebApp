@@ -20,6 +20,23 @@ export default function Sidebar() {
             </a>
           </li>
         </ul>
+
+        <div className="dizajn">
+          <img
+            src={"./assets/logos/4.png"}
+            alt="Logo"
+            style={{
+              position: "relative",
+              bottom: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              // objectFit: "contain",
+              opacity: 0.9,
+              // pointerEvents: "none",
+            }}
+          />
+        </div>
       </div>
     </>
   );

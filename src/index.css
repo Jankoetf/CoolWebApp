@@ -42,6 +42,7 @@ body {
   padding: 0;
   height: 100%;
   width: 100%;
+  overflow: hidden;
 }
 
 /* ******* */
@@ -97,6 +98,14 @@ body {
   padding-top: 20px;
 }
 
+.dizajn {
+  position: absolute; /* Allow absolute positioning */
+  bottom: 20px; /* 20px from the bottom */
+  left: 0; /* Align to the left */
+  width: 100%;
+  overflow: hidden;
+}
+
 .sidebar ul {
   list-style-type: none; /* Remove bullets */
   padding: 0; /* Remove padding */
@@ -106,8 +115,12 @@ body {
   padding: 8px 16px;
   text-decoration: none; /* No underline */
   font-size: 25px; /* Increase font size */
-  color: rgb(209, 164, 164); /* White text color */
+  color: rgb(119, 19, 19);
   display: block;
+}
+
+.sidebar ul li a {
+  color: rgb(75, 4, 28); /* Change to your desired color */
 }
 
 .sidebar li:hover {
